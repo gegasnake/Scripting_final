@@ -1,0 +1,145 @@
+body, html, * {
+  font-family: 'Raleway', sans-serif;
+}
+
+
+.pdp-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 0;
+  margin-top: 24px;
+  color: #1d1f22;
+}
+
+.pdp-subtitle {
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 24px;
+  color: #1d1f22;
+}
+
+.pdp-label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 80px;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+  color: #1d1f22;
+  
+}
+
+.pdp-sizes {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.pdp-size-btn {
+  width: 48px;
+  height: 36px;
+  border: 1px solid #1d1f22;
+  background: #fff;
+  color: #1d1f22;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  font-family: inherit;
+}
+
+.pdp-size-btn.selected,
+.pdp-size-btn:hover {
+  background: #1d1f22;
+  color: #fff;
+  border: 1px solid #1d1f22;
+}
+
+.pdp-price {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #1d1f22;
+}
+
+.pdp-add-to-cart:hover {
+  background: #4caf50;
+}
+
+.pdp-description {
+  font-size: 15px;
+  color: #1d1f22;
+  margin-top: 8px;
+  line-height: 1.5;
+  max-width: 350px;
+}
+
+
+.pdp-container {
+  background: #fff;
+  margin: 32px auto;
+  padding: 40px 48px;
+  max-width: 1200px;
+  display: flex;
+  gap: 40px; /* reduced gap */
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.pdp-gallery {
+  display: flex;
+  gap: 16px; /* reduced gap */
+}
+
+.pdp-thumbnails {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pdp-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border 0.2s;
+  background: #f7f7f7;
+}
+
+
+.pdp-thumbnail:hover {
+  border: 2px solid #5ece7b;
+}
+
+.pdp-main-image img {
+  width: 500px;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #f7f7f7;
+}
+
+.pdp-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-left: 0; /* remove left margin */
+}
+
+.pdp-add-to-cart {
+  background: #5ece7b;
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  padding: 16px 0;
+  width: 320px; /* smaller width */
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+  letter-spacing: 0.5px;
+  align-self: flex-start;
+}

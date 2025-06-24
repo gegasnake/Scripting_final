@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import ProductDetails from "./pages/ProductDetails";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import Payment from "./pages/Payment";
+import Confirmation from "./pages/Confirmation";
+import { CurrencyProvider } from "./pages/CurrencyContext";
 
 function App() {
+  const [activeCategory, setActiveCategory] = useState("WOMEN");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  <CurrencyProvider>
+    <Router>
+      <Navbar activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+      <Switch>
+        <Route exact path="/">
+          <Redirect to="/women" />
+        </Route>
+        <Route path="/women" component={Home} />
+        <Route path="/men" component={Home} />
+        <Route path="/kids" component={Home} />
+        <Route path="/product/:category/:id" component={ProductDetails} />
+        <Route path="/cart" component={Cart} />
+        <Route path="/checkout" component={Checkout} />
+        <Route path="/payment" component={Payment} />
+        <Route path="/confirmation/:orderId" component={Confirmation} />
+      </Switch>
+    </Router>
+  </CurrencyProvider>
   );
 }
 
