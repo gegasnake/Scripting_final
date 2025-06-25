@@ -2,10 +2,12 @@ import React from "react";
 import { useCart } from "./CartContext";
 import { useCurrency } from "./CurrencyContext";
 import { formatPrice } from "./utils/formatPrice";
+import { useHistory } from "react-router-dom";
 
 function CartPage() {
   const { cartItems, increment, decrement, updateSize } = useCart();
   const { currency } = useCurrency();
+  const history = useHistory();
 
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cartItems.reduce(
@@ -109,19 +111,21 @@ function CartPage() {
               Total: <span style={{ fontWeight: 700 }}>{formatPrice(totalPrice, currency)}</span>
             </div>
             <button
-              style={{
-                background: "#5ECE7B",
-                color: "#fff",
-                border: "none",
-                padding: "12px 36px",
-                fontWeight: 600,
-                borderRadius: 4,
-                fontSize: 16,
-                cursor: "pointer",
-              }}
-            >
-              CONTINUE
-            </button>
+  style={{
+    background: "#5ECE7B",
+    color: "#fff",
+    border: "none",
+    padding: "12px 36px",
+    fontWeight: 600,
+    borderRadius: 4,
+    fontSize: 16,
+    cursor: "pointer",
+  }}
+  onClick={() => history.push("/checkout")}
+>
+  CONTINUE
+</button>
+          
           </div>
         </>
       )}

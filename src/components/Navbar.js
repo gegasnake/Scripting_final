@@ -92,8 +92,8 @@ function Navbar() {
             onClick={() => setShowCurrency((v) => !v)}
           >
             <span>
-  {currencies.find(cur => cur.label === currency)?.symbol || "$"}
-</span>
+              {currencies.find(cur => cur.label === currency)?.symbol || "$"}
+            </span>
             <span style={{ marginLeft: 4 }}>
               <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
                 <path
@@ -181,7 +181,7 @@ function Navbar() {
                 padding: 24,
               }}
             >
-              <div style={{ fontWeight: 600, marginBottom: 16 }}>
+              <div style={{ fontWeight: 600, marginBottom: 16, cursor: "pointer" }}>
                 My Bag, {cartItems.reduce((sum, item) => sum + item.quantity, 0)} items
               </div>
               <div>
@@ -253,11 +253,12 @@ function Navbar() {
                 </span>
               </div>
               <div style={{ display: "flex", gap: 12 }}>
-                <button style={{ flex: 1, border: "1px solid #1D1F22", background: "#fff", padding: 10 }}
+                <button style={{ flex: 1, border: "1px solid #1D1F22", background: "#fff", padding: 10, cursor: "pointer" }}
                     onClick={() => history.push("/cart")}>
                      VIEW BAG
                 </button>
-                <button style={{ flex: 1, background: "#5ECE7B", color: "#fff", border: "none", padding: 10 }}>
+                <button style={{ flex: 1, background: "#5ECE7B", color: "#fff", border: "none", padding: 10, cursor: "pointer" }}
+                  onClick={() => history.push("/checkout")}>
                   CHECK OUT
                 </button>
               </div>
