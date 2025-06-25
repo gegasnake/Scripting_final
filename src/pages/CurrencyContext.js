@@ -5,7 +5,7 @@ const CurrencyContext = createContext();
 export const currencyRates = {
   USD: { symbol: "$", rate: 1 },
   EUR: { symbol: "€", rate: 0.93 },
-  GEL: { symbol: "₾", rate: 2.75 },
+  JPY: { symbol: "¥", rate: 158.5 }, 
 };
 
 export function CurrencyProvider({ children }) {

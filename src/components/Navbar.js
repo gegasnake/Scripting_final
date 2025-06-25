@@ -2,10 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import logo from "../assets/logo.png";
 import cartIcon from "../assets/cart.png";
-
-import product1 from "../assets/women/image1.png";
-import product2 from "../assets/men/image5.png";
-
+import { useCurrency, currencyRates } from "../pages/CurrencyContext"; // path may vary
+import { useCart } from "../pages/CartContext"; // adjust the path
 const currencies = [
   { symbol: "$", label: "USD" },
   { symbol: "€", label: "EUR" },
@@ -25,63 +23,17 @@ function Navbar() {
   const history = useHistory();
   const [showCart, setShowCart] = useState(false);
   const [showCurrency, setShowCurrency] = useState(false);
-  const [currency, setCurrency] = useState(currencies[0]);
+  const { currency, setCurrency } = useCurrency();
   const cartRef = useRef();
   const currencyRef = useRef();
-
   // Example cart data (replace with your real cart state)
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Apollo Running Short",
-      price: 50,
-      quantity: 1,
-      sizes: ["XS", "S", "M", "L"],
-      selectedSize: "S",
-      image: product1,
-    },
-    {
-      id: 2,
-      name: "Jupiter Wayfarer",
-      price: 75,
-      quantity: 2,
-      sizes: ["S", "M"],
-      selectedSize: "M",
-      image: product2,
-    },
-  ]);
-  
-const handleSelectSize = (itemId, size) => {
-  setCartItems((prev) =>
-    prev.map((item) =>
-      item.id === itemId ? { ...item, selectedSize: size } : item
-    )
-  );
-};
+  const { cartItems, increment, decrement, updateSize } = useCart();
 
-const handleIncrease = (itemId) => {
-  setCartItems((prev) =>
-    prev.map((item) =>
-      item.id === itemId
-        ? { ...item, quantity: item.quantity + 1 }
-        : item
-    )
-  );
-};
+  const total = cartItems.reduce(
+  (sum, item) => sum + item.price * item.quantity,
+  0
+);
 
-const handleDecrease = (itemId) => {
-  setCartItems((prev) =>
-    prev
-      .map((item) =>
-        item.id === itemId
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-      .filter((item) => item.quantity > 0)
-  );
-};
-
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   
 
   // Close overlays on outside click
@@ -139,7 +91,9 @@ const handleDecrease = (itemId) => {
             style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
             onClick={() => setShowCurrency((v) => !v)}
           >
-            <span>{currency.symbol}</span>
+            <span>
+  {currencies.find(cur => cur.label === currency)?.symbol || "$"}
+</span>
             <span style={{ marginLeft: 4 }}>
               <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
                 <path
@@ -172,7 +126,7 @@ const handleDecrease = (itemId) => {
                     background: currency.label === cur.label ? "#f5f5f5" : "#fff",
                   }}
                   onClick={() => {
-                    setCurrency(cur);
+                    setCurrency(cur.label);
                     setShowCurrency(false);
                   }}
                 >
@@ -248,22 +202,22 @@ const handleDecrease = (itemId) => {
   <div style={{ flex: 2 }}>
     <div style={{ fontWeight: 500 }}>{item.name}</div>
     <div style={{ margin: "8px 0" }}>
-      {currency.symbol}
-      {(item.price).toFixed(2)}
+      {currencyRates[currency].symbol}
+      {(item.price * currencyRates[currency].rate).toFixed(2)}
     </div>
     <div style={{ marginBottom: 8 }}>
   Size:
-  {item.sizes.map((size) => (
+   {item.sizes.map((size) => (
     <span
       key={size}
-      onClick={() => handleSelectSize(item.id, size)}
+      onClick={() => updateSize(item.id, item.size, size, item.category)}
       style={{
         display: "inline-block",
         margin: "0 4px",
         padding: "2px 8px",
         border: "1px solid #1D1F22",
-        background: size === item.selectedSize ? "#1D1F22" : "#fff",
-        color: size === item.selectedSize ? "#fff" : "#1D1F22",
+        background: size === item.size ? "#1D1F22" : "#fff",
+        color: size === item.size ? "#fff" : "#1D1F22",
         borderRadius: 2,
         fontSize: 12,
         cursor: "pointer",
@@ -277,15 +231,9 @@ const handleDecrease = (itemId) => {
   </div>
   {/* Quantity Controls */}
   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-  <button
-    style={{ width: 32, height: 32, fontSize: 18 }}
-    onClick={() => handleIncrease(item.id)}
-  >+</button>
+  <button onClick={() => increment(item.id, item.size, item.category)}>+</button>
   <span style={{ margin: "4px 0" }}>{item.quantity}</span>
-  <button
-    style={{ width: 32, height: 32, fontSize: 18 }}
-    onClick={() => handleDecrease(item.id)}
-  >-</button>
+  <button onClick={() => decrement(item.id, item.size, item.category)}>-</button>
 </div>
   {/* Product Image */}
   <img
@@ -299,13 +247,15 @@ const handleDecrease = (itemId) => {
               <div style={{ display: "flex", justifyContent: "space-between", margin: "16px 0" }}>
                 <span style={{ fontWeight: 600 }}>Total</span>
                 <span style={{ fontWeight: 600 }}>
-                  {currency.symbol}
-                  {total.toFixed(2)}
+                  {currencyRates[currency]?.symbol}
+                  {(total * currencyRates[currency]?.rate).toFixed(2)}
+
                 </span>
               </div>
               <div style={{ display: "flex", gap: 12 }}>
-                <button style={{ flex: 1, border: "1px solid #1D1F22", background: "#fff", padding: 10 }}>
-                  VIEW BAG
+                <button style={{ flex: 1, border: "1px solid #1D1F22", background: "#fff", padding: 10 }}
+                    onClick={() => history.push("/cart")}>
+                     VIEW BAG
                 </button>
                 <button style={{ flex: 1, background: "#5ECE7B", color: "#fff", border: "none", padding: 10 }}>
                   CHECK OUT
